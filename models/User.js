@@ -29,6 +29,13 @@ const userSchema = new Schema({
     avatarURL: {
         type: String
     },
+    verify: {
+        type: Boolean,
+        default: false,
+    },
+    verificationCode: {
+        type: String,
+    },
 }, {versionKey: false, timestamps: true});
 
 userSchema.post("save", handleSaveError);
@@ -46,6 +53,12 @@ export const userSignupSchema = Joi.object({
 export const userSigninSchema = Joi.object({
     email: Joi.string().pattern(emailRegexp).required(),
     password: Joi.string().min(6).required(),
+})
+
+export const userEmailSchema = Joi.object({
+    email: Joi.string().pattern(emailRegexp).required().messages({
+        "any.required": "missing required field email"
+    }),
 })
 
 export const userSubscriptionSchema = Joi.object({
